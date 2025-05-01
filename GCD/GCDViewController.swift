@@ -104,7 +104,7 @@ class GCDViewController: UIViewController {
     //MARK: Private Functions
     
     @objc private func startGCD() {
-        viewModel.heavyCalculationStart()
+        viewModel.asyncExample()
         
     }
     

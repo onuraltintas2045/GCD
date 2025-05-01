@@ -21,6 +21,17 @@ final class GCDViewModel {
         }
     }
     
+    func asyncExample() {
+        for i in 0...10 {
+            DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    print("print1", i)
+                }
+                print("print2", i)
+            }
+        }
+    }
+    
     func heavyCalculation() {
         Thread.sleep(forTimeInterval: 5)
     }
