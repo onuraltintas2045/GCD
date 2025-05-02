@@ -32,6 +32,20 @@ final class GCDViewModel {
         }
     }
     
+    /*
+     //Deadlock
+    func deadlockExample() {
+        print("1")
+        DispatchQueue.main.async {
+            print("2")
+            DispatchQueue.main.sync {
+                print("3")
+            }
+            print("4")
+        }
+        print("5")
+    } */
+    
     func heavyCalculation() {
         Thread.sleep(forTimeInterval: 5)
     }
