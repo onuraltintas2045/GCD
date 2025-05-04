@@ -46,6 +46,32 @@ final class GCDViewModel {
         print("5")
     } */
     
+    func dispatchGroupExamp() {
+        let group = DispatchGroup()
+        
+        group.enter()
+        DispatchQueue.global().async {
+            print("1. işlem tamamlandı")
+            group.leave()
+        }
+        
+        group.enter()
+        DispatchQueue.global().async {
+            print("2. işlem tamamlandı")
+            group.leave()
+        }
+        
+        group.enter()
+        DispatchQueue.global().async {
+            print("3. işlem tamamlandı")
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            print("Tüm işlemler tamamlandı")
+        }
+    }
+    
     func heavyCalculation() {
         Thread.sleep(forTimeInterval: 5)
     }
