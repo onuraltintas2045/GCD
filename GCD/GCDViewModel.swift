@@ -32,8 +32,8 @@ final class GCDViewModel {
         }
     }
     
-    /*
-     //Deadlock
+    
+    //Deadlock
     func deadlockExample() {
         print("1")
         DispatchQueue.main.async {
@@ -44,7 +44,7 @@ final class GCDViewModel {
             print("4")
         }
         print("5")
-    } */
+    }
     
     func dispatchGroupExamp() {
         let group = DispatchGroup()
