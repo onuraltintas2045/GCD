@@ -10,6 +10,8 @@ import UIKit
 
 protocol GCDViewModelDelegate: AnyObject {
     func heavyCalculateDidFinish()
+    func didUpdateUser()
+    func didFailWithError(_ error: Error)
 }
 
 class GCDViewController: UIViewController {
@@ -53,17 +55,28 @@ class GCDViewController: UIViewController {
         button.addTarget(self, action: #selector(plusNumber), for: .touchUpInside)
         return button
     }()
+    
+    private lazy var userTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = .blue
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        return tableView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         viewModel.delegate = self
+        userTableView.delegate = self
+        userTableView.dataSource = self
         setupViews()
         setupConstraints()
+        viewModel.fetchUsers()
     }
     
     func setupViews() {
         view.addSubview(containerView)
+        view.addSubview(userTableView)
         containerView.addSubview(label)
         containerView.addSubview(heavyCalculateStartButton)
         containerView.addSubview(colorChangeButton)
@@ -71,14 +84,14 @@ class GCDViewController: UIViewController {
     
     func setupConstraints() {
         containerView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
             make.width.equalTo(300)
             make.height.equalTo(150)
         }
         
         label.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(5)
+            make.top.equalToSuperview().offset(15)
             make.left.right.equalToSuperview()
             make.height.equalTo(30)
         }
@@ -95,6 +108,12 @@ class GCDViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.width.equalTo(100)
             make.height.equalTo(30)
+        }
+        
+        userTableView.snp.makeConstraints { make in
+            make.top.equalTo(containerView.snp.bottom).offset(20)
+            make.left.right.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().inset(5)
         }
         
     }
@@ -117,9 +136,30 @@ class GCDViewController: UIViewController {
 }
 
 extension GCDViewController: GCDViewModelDelegate {
+    func didUpdateUser() {
+        userTableView.reloadData()
+    }
+    
+    func didFailWithError(_ error: any Error) {
+        label.text = "\(error)"
+    }
+    
     
     func heavyCalculateDidFinish() {
         self.label.text = "Calculate Finished"
+    }
+}
+
+extension GCDViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.users.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let user = viewModel.users[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = "\(user.name) - \(user.email)"
+        return cell
     }
 }
 

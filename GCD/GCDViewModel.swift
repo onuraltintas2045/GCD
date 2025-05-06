@@ -10,6 +10,7 @@ import Foundation
 final class GCDViewModel {
     
     weak var delegate: GCDViewModelDelegate?
+    private(set) var users: [UserModel] = []
     
     func heavyCalculationStart() {
         DispatchQueue.global().async {
@@ -74,6 +75,38 @@ final class GCDViewModel {
     
     func heavyCalculation() {
         Thread.sleep(forTimeInterval: 5)
+    }
+    
+    func fetchUsers() {
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/users") else { return }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.delegate?.didFailWithError(error)
+                }
+                return
+            }
+            
+            guard let data = data else { return }
+            
+            do {
+                let users = try JSONDecoder().decode([UserModel].self, from: data)
+                DispatchQueue.main.async {
+                    self.users = users
+                    self.delegate?.didUpdateUser()
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    self.delegate?.didFailWithError(error)
+                }
+            }
+            
+        }
+        task.resume()
+        
     }
     
 }
