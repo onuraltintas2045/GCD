@@ -76,25 +76,90 @@ final class GCDViewModel {
     func serialQueue() {
         let serialQue = DispatchQueue(label: "serialQueue")
         
-        serialQue.async {
+        serialQue.sync {
             print("işlem 1 yapıldı")
+            
         }
         
         serialQue.sync {
             print("işlem 2 yapıldı")
         }
         
+        
         serialQue.sync {
             print("işlem 3 yapıldı")
         }
     }
     
+    func serialQue2() {
+        let serialQueu2 = DispatchQueue(label: "serialQueu2")
+        print("işlemler başladı")
+        serialQueu2.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 5 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 1 tamamlandı")
+        }
+        
+        serialQueu2.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 3 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 2 tamamlandı")
+        }
+        
+        serialQueu2.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 1 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 3 tamamlandı")
+        }
+        
+        print("işlemler bitti")
+    }
+    
+    func globalQue3() {
+        let globalQu3 = DispatchQueue.global()
+        print("işlemler başladı")
+        globalQu3.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 5 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 1 tamamlandı")
+        }
+        
+        globalQu3.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 3 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 2 tamamlandı")
+        }
+        
+        globalQu3.sync {
+            let start = Date()
+            while Date().timeIntervalSince(start) < 1 {
+                // Boş döngü 5 saniye
+            }
+            print("işlem 3 tamamlandı")
+        }
+        print("işlemler bitti")
+    }
+    
     //Deadlock
     func globalQueueSync() {
+        
+        //Deadlock olmaz ama güvenli değil
         DispatchQueue.global().async {
-            print("5 saniye geçti (UI donmuştur)")
+            print("işlem 1 tamamlandı")
+            
             DispatchQueue.global().sync {
-                self.delegate?.heavyCalculateDidFinish()
+                print("işlem 2 tamamlandı")
+                //self.delegate?.heavyCalculateDidFinish()
             }
         }
         

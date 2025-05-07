@@ -123,7 +123,10 @@ class GCDViewController: UIViewController {
     //MARK: Private Functions
     
     @objc private func startGCD() {
-        viewModel.globalQueueSync2()
+        //Sync işlem çağıracaksan ve bunu bir click eventine atadıysan işlemi background threadde çağırmalısın ki UI kilitlenmesin
+        DispatchQueue.global().async {
+            self.viewModel.globalQue3()
+        }
         
     }
     
