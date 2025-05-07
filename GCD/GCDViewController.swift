@@ -123,7 +123,7 @@ class GCDViewController: UIViewController {
     //MARK: Private Functions
     
     @objc private func startGCD() {
-        viewModel.dispatchGroupExamp()
+        viewModel.globalQueueSync2()
         
     }
     

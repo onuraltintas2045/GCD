@@ -73,6 +73,48 @@ final class GCDViewModel {
         }
     }
     
+    func serialQueue() {
+        let serialQue = DispatchQueue(label: "serialQueue")
+        
+        serialQue.async {
+            print("işlem 1 yapıldı")
+        }
+        
+        serialQue.sync {
+            print("işlem 2 yapıldı")
+        }
+        
+        serialQue.sync {
+            print("işlem 3 yapıldı")
+        }
+    }
+    
+    //Deadlock
+    func globalQueueSync() {
+        DispatchQueue.global().async {
+            print("5 saniye geçti (UI donmuştur)")
+            DispatchQueue.global().sync {
+                self.delegate?.heavyCalculateDidFinish()
+            }
+        }
+        
+    }
+    
+    //Deadlock
+    func globalQueueSync2() {
+        
+        let globalQ = DispatchQueue.global()
+        globalQ.async {
+            print("5 saniye geçti (UI donmuştur)")
+            
+        }
+        
+        globalQ.sync {
+            self.delegate?.heavyCalculateDidFinish()
+        }
+        
+    }
+    
     func heavyCalculation() {
         Thread.sleep(forTimeInterval: 5)
     }
