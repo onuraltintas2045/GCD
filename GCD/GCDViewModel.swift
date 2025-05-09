@@ -94,7 +94,7 @@ final class GCDViewModel {
     func serialQue2() {
         let serialQueu2 = DispatchQueue(label: "serialQueu2")
         print("işlemler başladı")
-        serialQueu2.sync {
+        serialQueu2.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 5 {
                 // Boş döngü 5 saniye
@@ -102,7 +102,7 @@ final class GCDViewModel {
             print("işlem 1 tamamlandı")
         }
         
-        serialQueu2.sync {
+        serialQueu2.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 3 {
                 // Boş döngü 5 saniye
@@ -110,7 +110,7 @@ final class GCDViewModel {
             print("işlem 2 tamamlandı")
         }
         
-        serialQueu2.sync {
+        serialQueu2.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 1 {
                 // Boş döngü 5 saniye
@@ -124,7 +124,7 @@ final class GCDViewModel {
     func globalQue3() {
         let globalQu3 = DispatchQueue.global()
         print("işlemler başladı")
-        globalQu3.sync {
+        globalQu3.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 5 {
                 // Boş döngü 5 saniye
@@ -132,7 +132,7 @@ final class GCDViewModel {
             print("işlem 1 tamamlandı")
         }
         
-        globalQu3.sync {
+        globalQu3.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 3 {
                 // Boş döngü 5 saniye
@@ -140,7 +140,7 @@ final class GCDViewModel {
             print("işlem 2 tamamlandı")
         }
         
-        globalQu3.sync {
+        globalQu3.async {
             let start = Date()
             while Date().timeIntervalSince(start) < 1 {
                 // Boş döngü 5 saniye
