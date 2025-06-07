@@ -130,7 +130,7 @@ class GCDViewController: UIViewController {
         }
         */
         //self.viewModel.globalQue3()
-        self.viewModel.serialQue2()
+        self.viewModel.syncFromMain()
 
         
     }

@@ -165,6 +165,13 @@ final class GCDViewModel {
         
     }
     
+    func syncFromMain() {
+        //Deadlock oluşur çünkü herhangi bir bacground threadden çağırılmadığı sürece bu blok main threadden tetiklenir.
+        DispatchQueue.main.sync {
+            print("sync bloğu çalıştı")
+        }
+    }
+    
     //Deadlock
     func globalQueueSync2() {
         
